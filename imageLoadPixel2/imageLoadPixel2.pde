@@ -1,3 +1,4 @@
+
 PImage myImage;
 int halfImage;
 int count = 0 ;
@@ -6,6 +7,7 @@ float scal, theta;
 
 void setup() {
   size(154, 154);
+  
   halfImage = width * height/2;
   myImage = loadImage("testsnall.png");
   myImage.loadPixels();
@@ -15,7 +17,7 @@ void setup() {
       //println(c);
       if (c != -16777216){
         PVector org = new PVector(i,j);
-        float radius = random(1);
+        float radius = random(5,10);
         PVector loc = new PVector(org.x+radius, org.y);
         float offSet = random(TWO_PI);
         float dir = 0.1;
@@ -36,10 +38,11 @@ void setup() {
 void draw() {
   background(20);
   theta += .0523;
-     for (int j = 0; j < myBallCollection.size(); ++j) {
+  for (int j = 0; j < myBallCollection.size(); ++j) {
        Ball mb = (Ball) myBallCollection.get(j);
        mb.run();
-     }
+  }
+   
 }
 
 
@@ -53,7 +56,6 @@ class Ball {
   String message;
   float ranColor3;
   int randomStar = int(random(0, 20));
-
 
   Ball(PVector _org, PVector _loc, float _radius, float _dir, float _offSet, int randomStar) {
     org = _org;
@@ -70,8 +72,8 @@ class Ball {
   }
 
   void move() {
-    loc.x = org.x;
-    //loc.x = org.x + sin(theta*dir+offSet)*radius;
+    //loc.x = org.x;
+    loc.x = org.x + sin(theta*dir+offSet)*radius;
     loc.y = org.y + cos(theta*dir+offSet)*radius;
   }
 
