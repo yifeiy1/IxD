@@ -6,16 +6,17 @@ ArrayList myBallCollection = new ArrayList();
 float scal, theta;
 
 void setup() {
-  size(154, 154);
+  size(1749, 983);
   
   halfImage = width * height/2;
-  myImage = loadImage("testsnall.png");
+  myImage = loadImage("testLarge.png");
   myImage.loadPixels();
   for (int i = 0; i < width; i=i+int(random(5,10))) {
     for (int j = 0; j<height; j=j+int(random(1,10))){
       color c= myImage.get(i, j);
       //println(c);
-      if (c != -16777216){
+      if (c != -15461356){
+        println(c);
         PVector org = new PVector(i,j);
         float radius = random(5,10);
         PVector loc = new PVector(org.x+radius, org.y);
