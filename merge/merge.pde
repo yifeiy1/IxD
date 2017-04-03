@@ -45,8 +45,8 @@ void setup() {
     }
   }
   myImage.updatePixels();
-  myImage = loadImage("mask1.png");
-  myMask = loadImage("mask2.png");
+  myImage = loadImage("maskback.png");
+  myMask = loadImage("maskfront.png");
   
 //BG END
   letter = createGraphics(width, height);
