@@ -1,10 +1,25 @@
-//test pull
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+Minim minim;
+AudioPlayer song;
+
 PImage myImage;
 PImage myMask;
+PImage myS;
 
 //int count = 0 ;
 ArrayList myBGcollectiom = new ArrayList();
+PVector[] roughdots = new PVector[6];
+float[] distance = new float[6];
+float[] callibrate = new float[6];
+
 float scal, theta;
+int q = 0;
 
 /******** For LETTERS *********/
 int fc, num = 1800;
@@ -19,6 +34,7 @@ int balln = 0;
 int j = 0;
 float diameter = 10;
 boolean stateGrow = false;
+float opacity;
 
 void setup() {
 //BG START  
@@ -47,6 +63,13 @@ void setup() {
   myImage.updatePixels();
   myImage = loadImage("maskback.png");
   myMask = loadImage("maskfront.png");
+  minim = new Minim(this);
+  song = minim.loadFile("song.mp3");
+  song.play();
+  song.setGain(-20);
+
+  
+  
   
 //BG END
   letter = createGraphics(width, height);
@@ -110,32 +133,34 @@ void draw() {
      textSize(20);
      text(displayMessage, locationx+20, locationy+5);
      
-     fill(255,255,255);
+     fill(29,161,242,opacity);
      if (diameter >= 14){
        stateGrow = true;
-       print("changed");
      }
      if (diameter <= 10){
        stateGrow = false;
      }
      if(stateGrow == false){
-       diameter+= 0.1;
+       diameter+= 0.2;
+       opacity = map(diameter,6,18,0,255);
        ellipse(locationx, locationy, diameter, diameter);
-       println("grow");
     
      }
      if(stateGrow == true){
         diameter-= 0.1;
         ellipse(locationx, locationy, diameter, diameter);
-        println("flat");
      }
+     
+     
+     
      
    }
 
   if (save) {
     if (frameCount%1==0 && frameCount < fc + 30) saveFrame("image-####.gif");
-  }  
+  }   
   
+  nearest();
   
 }
 
@@ -209,19 +234,58 @@ void star(float x, float y, float radius1, float radius2, int npoints) {
 
 void createStuff(String l) {
   //ballCollection.clear();
+  float randomHeight = random(200,700);
   letter.beginDraw();
   letter.noStroke();
   letter.background(255);
   letter.fill(0);
   letter.textFont(font, 400);
   letter.textAlign(LEFT);
-  letter.text(l, i, random(200,700));//design
+  letter.text(l, i, randomHeight);//design
   letter.endDraw();
   letter.loadPixels();
   i+=textWidth(l)*40;
+  
+  callibrate[0]=150;
+  callibrate[1]=110;
+  callibrate[2]=130;
+  callibrate[3]=130;
+  callibrate[4]=130;
+  callibrate[5]=110;
+  PVector textContour = new PVector((i-textWidth(l)/2*40),randomHeight-callibrate[q]);
+  //roughdots.add(textContour);
+  
+  roughdots[q] = textContour;
+  q++;
 
   letterCollection.add(new Letter());
 
+}
+
+void nearest(){
+  
+  for (int i = 0; i< 6; i++){
+    distance[i] = sqrt((mouseX - roughdots[i].x)*(mouseX - roughdots[i].x) + (mouseY -roughdots[i].y)*(mouseY - roughdots[i].y));
+    //ellipse(roughdots[i].x, roughdots[i].y, 16, 16);
+  }
+  float dismin = min(distance);
+  //print(dismin);
+  for (int i = 0; i< 6; i++){
+    if (dismin == distance[i]){
+      //println(i);//nearst string
+    }
+  }
+  float volume = map(dismin, 0, 400, 0, -sqrt(25));
+  if (volume*volume<3){
+    volume = sqrt(3);
+  }
+  if (volume*volume>25){
+    volume = sqrt(25);
+  }  
+  
+  song.setGain(-volume*volume);
+  //println(dismin);
+  //println(-volume*volume);
 }
 
 class Letter{
@@ -293,7 +357,7 @@ class Ball {
     radius = _radius;
     dir = _dir;
     offSet = _offSet;
-    message = "Balltest123422333dsfadfasfsafas sfdasfaafsd" + str(balln);
+    message = "From spoon to the city" + str(balln);
     ++balln;
   }
 
