@@ -1,5 +1,4 @@
 int fc, num = 1800;
-int numNew = 2000;
 ArrayList letterCollection;
 boolean save = false;
 float scal, theta;
@@ -13,9 +12,7 @@ int balln = 0;
 
 // String line = "|";
 int j = 0;
-int timeDelay = 320; //milliseconds in one minute
-int time = 0;
-boolean bFlashBg = true;
+
 
 void setup() {
   background(0);
@@ -56,40 +53,11 @@ void draw() {
    String displayMessage = "test";
    float mindist = 1000;
 
-  // for (int i=0; i<ballCollection.size (); i++) {
-  //   Ball mb = (Ball) ballCollection.get(i);
-  //   mb.run();
-  //   float distance = abs(mb.loc.x - mouseX) + abs(mb.loc.y - mouseY);
-  //   if (distance < mindist) {
-  //     mindist = distance;
-  //     displayMessage = mb.message;
-  //   }
-  // }
-
-
    for (int i = 0; i<letterCollection.size(); ++i){
      Letter ml = (Letter) letterCollection.get(i);
      ml.run();
      for (int j = 0; j < ml.myBallCollection.size(); ++j) {
        Ball mb = (Ball) ml.myBallCollection.get(j);
-
-
-      //  for (int j=0; j<ml.myBallCollection.size(); j++) {
-      //    Ball other = (Ball) ml.myBallCollection.get(j);
-      //    //float distance = loc.dist(other.loc);
-      //    float distance = abs(mb.loc.x - other.loc.x) + abs(mb.loc.y - other.loc.y);
-      //    if (distance >0 && distance < mb.d) {
-      //      mb.a = map(mb.countC,0,10,100,255);
-      //      stroke(255, mb.a);
-      //      line(mb.loc.x, mb.loc.y, other.loc.x, other.loc.y);
-      //      mb.connection[i] = true;
-      //    }
-      //    else {
-      //      mb.connection[i] = false;
-      //    }
-      //  }
-       //
-      //  mb.run();
 
        float distance = abs(mb.loc.x - mouseX) + abs(mb.loc.y - mouseY);
        if (distance < mindist) {
@@ -104,11 +72,6 @@ void draw() {
      textSize(32);
      text(displayMessage, mouseX, mouseY);
    }
-
-  if (millis() - time >= timeDelay) {
-    time = millis();
-    bFlashBg = !bFlashBg;
-  }
 
   theta += .0523;
 

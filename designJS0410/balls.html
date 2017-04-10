@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello Web - Processing.js Test</title>
+  <script src="socket.io.min.js"></script>
+  <script src="processing.min.js"></script>
+</head>
+<body>
+  <h1>Processing.js Test</h1>
+  <p>This is my first Processing.js web-based sketch:</p>
+  <canvas data-processing-sources="bug.pde" id="sketch"></canvas>
+  <script>
+  'use strict';
+  const a = new Audio('song.mp3');
+  a.volume = 0.5;
+  a.play();
+
+  function getVolume(volume) {
+    a.volume = volume;
+  }
+
+  let processingInstance;
+
+  const socket = io('ws://127.0.0.1:3000/');
+
+  socket.on('connect', () => {
+    console.log('connected to server');
+  });
+  socket.on('stella', data =>
+    processingInstance && processingInstance.printData(data));
+
+  const interval = setInterval(() => {
+    if (!processingInstance) {
+      processingInstance = Processing.getInstanceById('sketch');
+      console.log('got instance');
+    } else {
+      clearInterval(interval);
+    }
+  }, 200);
+  </script>
+</body>
+</html>
