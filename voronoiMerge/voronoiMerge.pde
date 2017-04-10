@@ -1,5 +1,5 @@
 /******** For LETTERS *********/
-int fc, num = 600;
+int fc, num = 1800;
 ArrayList letterCollection;
 boolean save = false;
 PGraphics letter;
